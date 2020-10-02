@@ -100,6 +100,7 @@ void core(void *none) {
 			client_hdl = accept_list.data[accept_list.next_read];
 			if (client_hdl == 0) 
 				continue;
+			accept_list.flag = 0;
 			printf("client handle: %d\n", client_hdl);
 			if (accept_list.next_read == 1024) 
 				accept_list.next_read = 0;
@@ -116,9 +117,8 @@ void core(void *none) {
 			if (strcmp(request_method, "GET") == 0) {
 				// get request path
 				char request_path[1024];
-				printf("request method len = %d", request_method_len);
-				get_word(buffer, request_path, request_method_len + 1);
-				printf("request path: %s", request_path);
+				get_word(buffer, request_path, request_method_len + 4);
+				printf("request path: %s\n", request_path);
 				continue;
 			}
 			else if (strcmp(request_method, "POST") == 0) {
@@ -131,10 +131,11 @@ void core(void *none) {
 
 
 /*
-	get a word from 'src'
+	get a word from 'src' (end with ' ')
 */
 int get_word(char *src, char *buffer, int index) {
 	int i;
+	putchar(src[i]);
 	for (i = index; src[i] != ' '; i++) {
 		buffer[i] = src[i];
 	}
