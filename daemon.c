@@ -135,7 +135,7 @@ void core(void *none) {
 int get_word(char *src, char *buffer, int index) {
 	int i;
 	putchar(src[i]);
-	for (i = index; src[i] != ' '; i++) {
+	for (i = index; src[i] != ' ' || src[i] != '\0'; i++) {
 		buffer[i] = src[i];
 	}
 	buffer[i] = 0;
