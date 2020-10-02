@@ -4,6 +4,6 @@ cerver: daemon.c
 pushit: cerver
 	git add .
 	git commit -am 'commited'
-	git push https://github.com/pengruiyang-cpu/Cerver.git
+	git push https://github.com/pengruiyang-cpu/Cerver.git master
 
 
