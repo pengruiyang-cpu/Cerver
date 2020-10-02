@@ -15,7 +15,7 @@
 struct LIST {
 	int data[1024];
 	int next_read, next_write;
-	volatile int flag;
+	int count;
 }accept_list;
 
 void core(void *none);
@@ -83,7 +83,7 @@ int main(int argc, const char **argv) {
 		accept_list.next_write++;
 		if (accept_list.next_write == 1024)
 			accept_list.next_write = 0;
-		accept_list.flag = 1;
+		accept_list.count ++;
 	}
 }
 
@@ -96,15 +96,14 @@ void core(void *none) {
 	char request_method[10];
 	int client_hdl;
 	for (;;) {
-		if (accept_list.flag == 1){
+		if (accept_list.count == 1){
 			client_hdl = accept_list.data[accept_list.next_read];
 			if (client_hdl == 0) 
 				continue;
-			accept_list.flag = 0;
+			accept_list.count--;
 			printf("client handle: %d\n", client_hdl);
 			if (accept_list.next_read == 1024) 
 				accept_list.next_read = 0;
-				accept_list.flag = 0;
 			accept_list.next_read++;
 			
 			recv(client_hdl, buffer, sizeof(buffer), 0);
