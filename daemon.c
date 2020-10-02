@@ -117,7 +117,7 @@ void core(void *none) {
 			if (strcmp(request_method, "GET") == 0) {
 				// get request path
 				char request_path[1024];
-				get_word(buffer, request_path, request_method_len + 4);
+				get_word(buffer, request_path, request_method_len + 1);
 				printf("request path: %s\n", request_path);
 				continue;
 			}
