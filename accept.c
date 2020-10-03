@@ -9,7 +9,10 @@ void accept_request(void *none) {
     // get a client-handle from struct LIST accept_list and handle it.
     int client_handle;
     for (;;) {
-        if (accept_list.count == 0) pthread_exit(0);
+        if (accept_list.count == 0) {
+            DEBUG_LOG("no client found, fall asleep\n");
+            pthread_exit(0);
+        }
         client_handle = accept_list.data[accept_list.next_read];
         accept_list.count--;
         client_handle++;
@@ -25,6 +28,10 @@ void accept_request(void *none) {
         fprintf(stderr, "%s", buffer);
 
         char return_buffer[] = "hello, world";
-        write(client_handle, buffer, sizeof(buffer));
+        // '-1' means no ''\0'
+        if (write(client_handle, return_buffer, sizeof(return_buffer) - 1) == 0) {
+            printf("EMERGENCY: write to client failed\n");
+        }
+        close(client_handle);
     }
 }
